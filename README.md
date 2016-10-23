@@ -8,9 +8,13 @@ Using JOSN2Model you will be able to:
 * Change the root class name.
 * Set a class name prefix for the generated classes.
 
+* 使用[AutoParser](https://github.com/LarryPage/AutoParser)自动解析。AutoParser解析的任务是model的定义，model定义可以根据josn数据自动产生,JOSN2MODE就是为此而生，是用swift写的，可自接保存.h,.m文件。支持数值、字符串、自定义model，及model嵌套数组
+* 如josnk中key不符合propertyName,自动产生解析转换。如id，value，goto等关键词。转换的propertyName为camel
+* 数据嵌套关系model自动产生。
+
 Screenshot shows JOSN2Model used for a snippet from weibo timeline JSON and converting it to object-c Model
 ![alt tag](https://github.com/LarryPage/JOSN2Model/blob/master/screen001.png)
 
 app download
-![alt tag](https://github.com/LarryPage/JOSN2Model/blob/master/JOSN2Model.app)
+[JOSN2Model.app](https://github.com/LarryPage/JOSN2Model/blob/master/JOSN2Model.app.zip)
 
