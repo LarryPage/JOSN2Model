@@ -20,11 +20,12 @@ app download
 
 
 AutoParser + JOSN2MODEL实现自动化解析流程
-[AutoParser](https://github.com/LarryPage/AutoParser)
-[JOSN2MODEL](https://github.com/LarryPage/JOSN2Model)
-1.项目引入AutoParser目录下的NSObjectHelper.h，NSObjectHelper.m 主要用到其中的 initWithDic() & dic() 两个方法
-2.JOSN2Model.app 桌面app，将api返回的josn数据转成model，保存.h.m，并引入到项目中
-3.使用:
-ModelClass *record=[[ModelClass alloc] initWithDic:response[@"data"]];//dic转model
-NSDictionary *dic=[record dic];//model转dic
+==========
+* [AutoParser](https://github.com/LarryPage/AutoParser)
+* [JOSN2MODEL](https://github.com/LarryPage/JOSN2Model)
+* 1.项目引入AutoParser目录下的NSObjectHelper.h，NSObjectHelper.m 主要用到其中的 initWithDic() & dic() 两个方法
+* 2.JOSN2Model.app 桌面app，将api返回的josn数据转成model，保存.h.m，并引入到项目中
+* 3.使用:
+* ModelClass *record=[[ModelClass alloc] initWithDic:response[@"data"]];//dic转model
+* NSDictionary *dic=[record dic];//model转dic
 
