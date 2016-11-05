@@ -93,8 +93,9 @@ class FileRepresenter{
         //appendProperties()
         //appendSettersAndGetters()
         appendArrayInit()
-        appendInitializers()
-        appendUtilityMethods()
+        appendReplacedKeyMap()
+        //appendInitializers()
+        //appendUtilityMethods()
         fileContent = fileContent.replacingOccurrences(of: lowerCaseModelName, with:className.lowercaseFirstChar())
         fileContent = fileContent.replacingOccurrences(of: modelName, with:className)
         fileContent += lang.modelEnd
@@ -309,6 +310,28 @@ class FileRepresenter{
             fileContent += tempStr
             fileContent += "\n\t}"
             fileContent += "\n\treturn self;"
+            fileContent += "\n}"
+            fileContent += "\n"
+        }
+    }
+    
+    /**
+     在propertyName与josnKeyName不一致时,添加类方法:replacedKeyMap,返回{propertyName:jsonKeyName}
+     */
+    func appendReplacedKeyMap(){
+        var tempStr = ""
+        for property in properties{
+            if property.nativeName != property.jsonName {
+                tempStr += "\n\t[map safeSetObject:@\"\(property.jsonName)\" forKey:@\"\(property.nativeName)\"];"
+            }
+        }
+        if !tempStr.isEmpty {
+            fileContent += "\n"
+            fileContent += "+ (NSDictionary *)replacedKeyMap{"
+            fileContent += "\n\tNSMutableDictionary *map = [NSMutableDictionary dictionaryWithDictionary:[self.superclass replacedKeyMap]];"
+            fileContent += "\n\t//[map safeSetObject:@\"jsonKeyName\" forKey:@\"propertyName\"];"
+            fileContent += tempStr
+            fileContent += "\n\treturn map;"
             fileContent += "\n}"
             fileContent += "\n"
         }
