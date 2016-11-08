@@ -405,7 +405,7 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
                         self.sourceText.isEditable = true
                         self.saveButton.isEnabled = false
                         if error != nil{
-                            print(error)
+                            print(error!)
                         }
                         self.showErrorStatus("It seems your JSON object is not valid!")
                     })
