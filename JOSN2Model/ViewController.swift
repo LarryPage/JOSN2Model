@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTableViewDataSource, NSTableViewDelegate, NSTextViewDelegate {
+class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTableViewDataSource, NSTableViewDelegate, NSTextViewDelegate, NSMenuDelegate {
     
     //Shows the list of files' preview
     @IBOutlet weak var tableView: NSTableView!
@@ -20,7 +20,14 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     @IBOutlet weak var saveButton: NSButton!
     
     //Connected to the JSON input text view
+    @IBOutlet var httpParamText: NSTextView!
+    
+    //Connected to the scroll view which wraps the httpParamText
+    @IBOutlet weak var httpParamScrollView: NSScrollView!
+    
+    //Connected to the JSON input text view
     @IBOutlet var sourceText: NSTextView!
+    @IBOutlet var jsonInputTopConstraint: NSLayoutConstraint!
     
     //Connected to the scroll view which wraps the sourceText
     @IBOutlet weak var scrollView: NSScrollView!
@@ -45,6 +52,15 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     
     //Connected to the languages pop up
     @IBOutlet weak var languagesPopup: NSPopUpButton!
+    
+    //Connected to the http request method
+    @IBOutlet weak var httpMethodPopup: NSPopUpButton!
+    
+    //Connected to the http request Url string field
+    @IBOutlet weak var httpUrlField: NSTextField!
+    
+    //Connected to the http request send button
+    @IBOutlet weak var sendButton: NSButton!
     
     var jsonWriter: SBJson4Writer?
     
@@ -71,6 +87,203 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
         initSBJsonWriter()
         setLanguagesSelection()
         updateUIFieldsForSelectedLanguage()
+        
+        setHttpMethodSelection()
+        setupNumberedhttpParamScrollView()
+    }
+    
+    /**
+     Sets the values of httpMethodPopup items' titles
+     */
+    func setHttpMethodSelection()
+    {
+        let methods = ["GET","POST","HEAD","PUT","DELETE"]
+        httpMethodPopup.removeAllItems()
+        httpMethodPopup.addItems(withTitles: methods)
+        httpMethodPopup.menu?.delegate=self
+        jsonInputTopConstraint.constant=28;
+    }
+    
+    func menuDidClose(_ menu: NSMenu)
+    {
+        if(menu == httpMethodPopup.menu)
+        {
+            switch httpMethodPopup.titleOfSelectedItem! {
+            case "GET","HEAD":
+                jsonInputTopConstraint.constant=28;
+                httpParamText.string = ""
+            case "POST","PUT","DELETE":
+                jsonInputTopConstraint.constant=130;
+                var parameters = [String: String]()
+                parameters["param1"] = "value1"
+                parameters["param2"] = "value2"
+                let data = self.jsonWriter!.data(with: parameters)
+                let output = String(data: data!, encoding: String.Encoding.utf8)
+                httpParamText.string = output
+            default:
+                jsonInputTopConstraint.constant=28;
+                httpParamText.string = ""
+            }
+            sourceText.string = ""
+            generateClasses()
+        }
+    }
+    
+    /**
+     Sets the needed configurations for show the line numbers in the input text view
+     */
+    func setupNumberedhttpParamScrollView()
+    {
+        let lineNumberView = NoodleLineNumberView(scrollView: httpParamScrollView)
+        httpParamScrollView.hasHorizontalRuler = false
+        httpParamScrollView.hasVerticalRuler = true
+        httpParamScrollView.verticalRulerView = lineNumberView
+        httpParamScrollView.rulersVisible = true
+        httpParamText.font = NSFont.userFixedPitchFont(ofSize: NSFont.smallSystemFontSize())
+        
+    }
+    
+    //MARK: - send http request
+    @IBAction func sendBtn(_ sender: AnyObject)
+    {
+        //处理url
+        var string = httpUrlField.stringValue
+        if string.characters.count == 0{
+            self.showErrorStatus("It seems your url is not valid!")
+            return;
+        }
+        
+        var urlStr = string;
+        var parameters = [String: String]()
+        let urlComponents = NSURLComponents(string: string)
+        let queryItems = urlComponents?.queryItems
+        if (queryItems != nil) {
+            for item in queryItems! {
+                parameters[item.name] = item.value!
+            }
+            //print(urlComponents!.query!)
+            let rangIndex = string.range(of: "?")
+            urlStr = string.substring(to: rangIndex!.lowerBound)
+        }
+        
+        //处理param
+        var str = httpParamText.string!
+        str = jsonStringByRemovingUnwantedCharacters(str)
+        if str.characters.count>0 {
+            if let data = str.data(using: String.Encoding.utf8){
+                do {
+                    let jsonData : Any = try JSONSerialization.jsonObject(with: data, options: [])
+                    var json : NSDictionary!
+                    if jsonData is NSDictionary{
+                        //fine nothing to do
+                        json = jsonData as! NSDictionary
+                    }else{
+                        json = unionDictionaryFromArrayElements(jsonData as! NSArray)
+                    }
+                    
+                    for (key, value) in json {
+                        parameters["\(key)"] = "\(value)"
+                    }
+                } catch {
+                    self.showErrorStatus("It seems your param is not valid!")
+                    return;
+                }
+            }
+        }
+        
+        let manager = AFHTTPRequestOperationManager()
+        manager.responseSerializer.acceptableContentTypes = NSSet().adding("application/json")
+        switch httpMethodPopup.titleOfSelectedItem! {
+        case "GET":
+            manager.get(urlStr, parameters: parameters, success: { (operation, responseData) -> Void in
+                if responseData is NSDictionary {
+                    print(responseData)
+                    let data = self.jsonWriter!.data(with: responseData)
+                    let output = String(data: data!, encoding: String.Encoding.utf8)
+                    self.sourceText.string = output
+                    self.generateClasses()
+                } else {
+                    self.showErrorStatus("error: responseData is not a dictionary json");
+                    print("error: responseData is not a dictionary json")
+                }
+            }, failure: { (operation, error) -> Void in
+                print(error)
+                self.showErrorStatus(error.localizedDescription)
+            })
+        case "POST":
+            manager.post(urlStr, parameters: parameters, success: { (operation, responseData) -> Void in
+                if responseData is NSDictionary {
+                    print(responseData)
+                    let data = self.jsonWriter!.data(with: responseData)
+                    let output = String(data: data!, encoding: String.Encoding.utf8)
+                    self.sourceText.string = output
+                    self.generateClasses()
+                } else {
+                    self.showErrorStatus("error: responseData is not a dictionary json");
+                    print("error: responseData is not a dictionary json")
+                }
+            }, failure: { (operation, error) -> Void in
+                print(error)
+                self.showErrorStatus(error.localizedDescription)
+            })
+        case "HEAD":
+            manager.head(urlStr, parameters: parameters, success: { (operation) -> Void in
+                self.showSuccessStatus("HEAD url done");
+            }, failure: { (operation, error) -> Void in
+                print(error)
+                self.showErrorStatus(error.localizedDescription)
+            })
+        case "PUT":
+            manager.put(urlStr, parameters: parameters, success: { (operation, responseData) -> Void in
+                if responseData is NSDictionary {
+                    print(responseData)
+                    let data = self.jsonWriter!.data(with: responseData)
+                    let output = String(data: data!, encoding: String.Encoding.utf8)
+                    self.sourceText.string = output
+                    self.generateClasses()
+                } else {
+                    self.showErrorStatus("error: responseData is not a dictionary json");
+                    print("error: responseData is not a dictionary json")
+                }
+            }, failure: { (operation, error) -> Void in
+                print(error)
+                self.showErrorStatus(error.localizedDescription)
+            })
+        case "DELETE":
+            manager.delete(urlStr, parameters: parameters, success: { (operation, responseData) -> Void in
+                if responseData is NSDictionary {
+                    print(responseData)
+                    let data = self.jsonWriter!.data(with: responseData)
+                    let output = String(data: data!, encoding: String.Encoding.utf8)
+                    self.sourceText.string = output
+                    self.generateClasses()
+                } else {
+                    self.showErrorStatus("error: responseData is not a dictionary json");
+                    print("error: responseData is not a dictionary json")
+                }
+            }, failure: { (operation, error) -> Void in
+                print(error)
+                self.showErrorStatus(error.localizedDescription)
+            })
+        default:
+            manager.post(urlStr, parameters: parameters, success: { (operation, responseData) -> Void in
+                if responseData is NSDictionary {
+                    print(responseData)
+                    let data = self.jsonWriter!.data(with: responseData)
+                    let output = String(data: data!, encoding: String.Encoding.utf8)
+                    self.sourceText.string = output
+                    self.generateClasses()
+                } else {
+                    self.showErrorStatus("error: responseData is not a dictionary json");
+                    print("error: responseData is not a dictionary json")
+                }
+            }, failure: { (operation, error) -> Void in
+                print(error)
+                self.showErrorStatus(error.localizedDescription)
+            })
+        }
+        
+        
     }
     
     /**
