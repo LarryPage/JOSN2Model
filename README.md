@@ -1,7 +1,7 @@
 JOSN2Model
 ==========
 一个Mac OS X 桌面appp。在使用[AutoParser](https://github.com/LarryPage/AutoParser)自动解析，AutoParser解析的任务是model的定义，model定义可以根据josn数据自动产生,JOSN2MODE就是为此而生，是用swift写的，可自接保存.h,.m文件。支持数值、字符串、自定义model，及model嵌套数组
-* 根据josn数据自动产生相关联的model.h,model.m.
+* 支持json文件，api接口，或输入的josn数据自动产生相关联的model.h,model.m.
 * 支持数值、字符串、自定义model，及model嵌套数组
 * 如json中key不符合propertyName,自动产生解析转换。如id，value，goto等关键词。转换的propertyName为camel写法
 * 数据嵌套关系model自动产生。
