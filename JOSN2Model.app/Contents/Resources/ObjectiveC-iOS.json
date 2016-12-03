@@ -141,7 +141,7 @@
     "modelStart": "",
     "importParentHeaderFile": "#import \"<!ParentClass!>.h\"\n",
     "headerFileExtension": "h",
-    "modelDefinition": "\n@interface <!ModelName!> : NSObject\n",
+    "modelDefinition": "\n@JSONInterface(<!ModelName!>) : NSObject\n",
     "importForEachCustomType": "#import \"<!ModelName!>.h\"\n",
     "instanceVarWithSpeicalDefinition": "@property (nonatomic, assign) <!VarType!> <!VarName!>;\n",
     "staticImports": "#import <Foundation/Foundation.h>"
