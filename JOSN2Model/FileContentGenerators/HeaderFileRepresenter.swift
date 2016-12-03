@@ -23,10 +23,10 @@ class HeaderFileRepresenter : FileRepresenter{
         appendImportParentHeader()
         appendCustomImports()
         
-        //根据需要是否添加@protocol
-        if allEachCustomType.index(of: className) != nil {
-            fileContent += "\n@protocol \(className) <NSObject>\n@end\n"
-        }
+        //V3.2根据需要是否添加@protocol
+//        if allEachCustomType.index(of: className) != nil {
+//            fileContent += "\n@protocol \(className) <NSObject>\n@end\n"
+//        }
         
         //start the model defination
         var definition = ""

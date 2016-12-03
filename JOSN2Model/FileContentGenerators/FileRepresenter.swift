@@ -328,7 +328,8 @@ class FileRepresenter{
         if !tempStr.isEmpty {
             fileContent += "\n"
             fileContent += "+ (NSDictionary *)replacedKeyMap{"
-            fileContent += "\n\tNSMutableDictionary *map = [NSMutableDictionary dictionaryWithDictionary:[self.superclass replacedKeyMap]];"
+//            fileContent += "\n\tNSMutableDictionary *map = [NSMutableDictionary dictionaryWithDictionary:[self.superclass replacedKeyMap]];"
+            fileContent += "\n\tNSMutableDictionary *map = [NSMutableDictionary dictionary];"
             fileContent += "\n\t//[map safeSetObject:@\"jsonKeyName\" forKey:@\"propertyName\"];"
             fileContent += tempStr
             fileContent += "\n\treturn map;"

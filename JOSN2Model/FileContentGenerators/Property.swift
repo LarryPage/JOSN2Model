@@ -75,7 +75,9 @@ class Property : Equatable{
             //for ios AutoParser
             if isArray {
                 if elementsAreOfCustomType {
-                    string = string.replacingOccurrences(of: varType, with: "NSMutableArray<\(elementsType)>")
+                    //V3.2
+//                    string = string.replacingOccurrences(of: varType, with: "NSMutableArray<\(elementsType)>")
+                    string = string.replacingOccurrences(of: varType, with: "JSONMutableArray(\(elementsType))")
                 }
                 else{
                     string = string.replacingOccurrences(of: varType, with: "NSMutableArray")
