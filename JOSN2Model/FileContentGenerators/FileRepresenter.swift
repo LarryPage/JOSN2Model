@@ -294,7 +294,7 @@ class FileRepresenter{
         for property in properties{
             if property.isArray {
                 if property.elementsAreOfCustomType {
-                    tempStr += "\n\t\tself.\(property.nativeName)=(NSMutableArray<\(property.elementsType)> *)[NSMutableArray array];"
+                    tempStr += "\n\t\tself.\(property.nativeName)=(JSONMutableArray(\(property.elementsType)) *)[NSMutableArray array];"
                 }
                 else{
                     tempStr += "\n\t\tself.\(property.nativeName)=[NSMutableArray array];"
