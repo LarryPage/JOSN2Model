@@ -13,8 +13,7 @@ Screenshot shows JOSN2Model used for a snippet from weibo timeline JSON and conv
 ![alt tag](https://github.com/LarryPage/JOSN2Model/blob/master/screen001.png)
 ![alt tag](https://github.com/LarryPage/JOSN2Model/blob/master/screen004.png)
 
-app download
-[JOSN2Model.app](https://github.com/LarryPage/JOSN2Model/blob/master/JOSN2Model.app.zip)
+app 下载<a href="http://adhoc.qiniudn.com/JOSN2Model.app.zip">JOSN2Model.app</a>
 
 
 AutoParser + JOSN2MODEL实现自动化解析流程
