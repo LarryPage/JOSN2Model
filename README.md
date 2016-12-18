@@ -8,6 +8,7 @@ JOSN2Model
 * Preview the generated content before saving it.
 * Change the root class name，class prefix,parent class name.
 * 若nativePropertyName和JosnKeyName不相同，自动产生(NSDictionary *)replacedKeyMap 方法
+* 一个api可以生成一个类.h.m，也可生成多个类.h.m。
 
 Screenshot shows JOSN2Model used for a snippet from weibo timeline JSON and converting it to object-c Model
 ![alt tag](https://github.com/LarryPage/JOSN2Model/blob/master/screen001.png)
