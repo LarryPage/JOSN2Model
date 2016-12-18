@@ -121,7 +121,7 @@
   "modelDefinition": "\n@JSONImplementation(<!ModelName!>)\n",
   "genericType": "NSObject",
   "headerFileData": {
-    "modelDefinitionWithParent": "\n@interface <!ModelName!> : <!ParentClass!>\n",
+    "modelDefinitionWithParent": "\n@JSONInterface(<!ModelName!>) : <!ParentClass!>\n",
     "modelEnd": "@end",
     "instanceVarDefinition": "@property (nonatomic, strong) <!VarType!> *<!VarName!>;\n",
     "utilityMethodSignatures": [

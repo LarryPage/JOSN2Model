@@ -102,6 +102,58 @@ class FileRepresenter{
         return fileContent
     }
     
+    func toHeadStr() -> String{
+        fileContent = ""
+        
+        appendFirstLineStatement()
+        appendCopyrights()
+        appendStaticImports()
+        appendHeaderFileImport()
+        appendConstVarDefinition()
+//        appendCustomImports()
+        
+        return fileContent
+    }
+    
+    /**
+     Generates the file content and stores it in the fileContent property
+     */
+    func toStr() -> String{
+        fileContent = "\n"
+//        appendFirstLineStatement()
+//        appendCopyrights()
+//        appendStaticImports()
+//        appendHeaderFileImport()
+//        appendConstVarDefinition()
+//        appendCustomImports()
+        //start the model defination
+        var definition = ""
+        if lang.modelDefinitionWithParent != nil && parentClassName.characters.count > 0{
+            definition = lang.modelDefinitionWithParent.replacingOccurrences(of: modelName, with: className)
+            definition = definition.replacingOccurrences(of: modelWithParentClassName, with: parentClassName)
+        }else if includeUtilities && lang.defaultParentWithUtilityMethods != nil{
+            definition = lang.modelDefinitionWithParent.replacingOccurrences(of: modelName, with: className)
+            definition = definition.replacingOccurrences(of: modelWithParentClassName, with: lang.defaultParentWithUtilityMethods)
+        }else{
+            definition = lang.modelDefinition.replacingOccurrences(of: modelName, with: className)
+        }
+        fileContent += definition
+        //start the model content body
+        fileContent += "\(lang.modelStart!)"
+        
+        //appendProperties()
+        //appendSettersAndGetters()
+        appendArrayInit()
+        appendReplacedKeyMap()
+        //appendInitializers()
+        //appendUtilityMethods()
+        fileContent = fileContent.replacingOccurrences(of: lowerCaseModelName, with:className.lowercaseFirstChar())
+        fileContent = fileContent.replacingOccurrences(of: modelName, with:className)
+        fileContent += lang.modelEnd
+        fileContent += "\n"
+        return fileContent
+    }
+    
     /**
     Appneds the firstLine value (if any) to the fileContent if the lang.supportsFirstLineStatement is true
     */

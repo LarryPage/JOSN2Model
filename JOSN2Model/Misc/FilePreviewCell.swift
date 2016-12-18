@@ -49,7 +49,49 @@ class FilePreviewCell: NSTableCellView, NSTextViewDelegate {
         }
     }
     
-    
+    func setFile(_ files: [FileRepresenter],index: Int)
+    {
+        let curFile = files[index]
+        var fileName = curFile.className
+        fileName += "."
+        if curFile is HeaderFileRepresenter{
+            fileName += curFile.lang.headerFileData.headerFileExtension
+        }else{
+            fileName += curFile.lang.fileExtension
+        }
+        classNameLabel.stringValue = fileName
+        if(textView != nil){
+            var content = ""
+            if curFile is HeaderFileRepresenter{
+                for file in files{
+                    if file is HeaderFileRepresenter{
+                        content = file.toStr() + content
+                    }
+                }
+            }
+            else{
+                for file in files{
+                    if file is HeaderFileRepresenter{
+                    }
+                    else{
+                        content = file.toStr() + content
+                    }
+                }
+            }
+            textView.string = curFile.toHeadStr() + content
+        }
+        
+        if file.includeConstructors{
+            constructors.state = NSOnState
+        }else{
+            constructors.state = NSOffState
+        }
+        if file.includeUtilities{
+            utilities.state = NSOnState
+        }else{
+            utilities.state = NSOffState
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

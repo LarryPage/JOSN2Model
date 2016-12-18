@@ -52,7 +52,61 @@ class HeaderFileRepresenter : FileRepresenter{
         return fileContent
     }
     
-  
+    override func toHeadStr() -> String{
+        fileContent = ""
+        
+        appendCopyrights()
+        appendStaticImports()
+//        appendImportParentHeader()
+//        appendCustomImports()
+        
+        //V3.2根据需要是否添加@protocol
+//        if allEachCustomType.index(of: className) != nil {
+//            fileContent += "\n@protocol \(className) <NSObject>\n@end\n"
+//        }
+        
+        return fileContent
+    }
+    
+    /**
+     Generates the header file content and stores it in the fileContent property
+     */
+    override func toStr() -> String{
+        fileContent = "\n"
+//        appendCopyrights()
+//        appendStaticImports()
+//        appendImportParentHeader()
+//        appendCustomImports()
+        
+        //V3.2根据需要是否添加@protocol
+//        if allEachCustomType.index(of: className) != nil {
+//            fileContent += "\n@protocol \(className) <NSObject>\n@end\n"
+//        }
+        
+        //start the model defination
+        var definition = ""
+        if lang.headerFileData.modelDefinitionWithParent != nil && parentClassName.characters.count > 0{
+            definition = lang.headerFileData.modelDefinitionWithParent.replacingOccurrences(of: modelName, with: className)
+            definition = definition.replacingOccurrences(of: modelWithParentClassName, with: parentClassName)
+        }else if includeUtilities && lang.defaultParentWithUtilityMethods != nil{
+            definition = lang.headerFileData.modelDefinitionWithParent.replacingOccurrences(of: modelName, with: className)
+            definition = definition.replacingOccurrences(of: modelWithParentClassName, with: lang.headerFileData.defaultParentWithUtilityMethods)
+        }else{
+            definition = lang.headerFileData.modelDefinition.replacingOccurrences(of: modelName, with: className)
+        }
+        
+        fileContent += definition
+        //start the model content body
+        fileContent += "\(lang.modelStart!)"
+        
+        appendProperties()
+        //appendInitializers()
+        //appendUtilityMethods()
+        fileContent += "\n"
+        fileContent += lang.modelEnd
+        fileContent += "\n"
+        return fileContent
+    }
     
     /**
     Appends the lang.headerFileData.staticImports if any

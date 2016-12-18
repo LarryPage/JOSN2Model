@@ -16,6 +16,9 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     //Connected to the top right corner to show the current parsing status
     @IBOutlet weak var statusTextField: NSTextField!
     
+    //Connected to the multiFile check button
+    @IBOutlet weak var multiFileCheckButton: NSButton!
+    
     //Connected to the save button
     @IBOutlet weak var saveButton: NSButton!
     
@@ -399,6 +402,10 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
         })
     }
     
+    @IBAction func toggleMultiFileCheckButton(_ sender: AnyObject)
+    {
+        generateClasses()
+    }
     
     @IBAction func toggleConstructors(_ sender: AnyObject)
     {
@@ -491,25 +498,62 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     func saveToPath(_ path : String)
     {
         var error : NSError?
-        for file in files{
-            var fileContent = file.fileContent
-            if fileContent == ""{
-                fileContent = file.toString()
+        if self.multiFileCheckButton.state==NSOnState {//多个model文件
+            for file in files{
+                let fileContent = file.toString()
+                var fileExtension = selectedLang.fileExtension
+                if file is HeaderFileRepresenter{
+                    fileExtension = selectedLang.headerFileData.headerFileExtension
+                }
+                let filePath = "\(path)/\(file.className).\(fileExtension)"
+                
+                do {
+                    try fileContent.write(toFile: filePath, atomically: false, encoding: String.Encoding.utf8)
+                } catch let error1 as NSError {
+                    error = error1
+                }
+                if error != nil{
+                    showError(error!)
+                    break
+                }
             }
-            var fileExtension = selectedLang.fileExtension
-            if file is HeaderFileRepresenter{
-                fileExtension = selectedLang.headerFileData.headerFileExtension
-            }
-            let filePath = "\(path)/\(file.className).\(fileExtension)"
-            
-            do {
-                try fileContent.write(toFile: filePath, atomically: false, encoding: String.Encoding.utf8)
-            } catch let error1 as NSError {
-                error = error1
-            }
-            if error != nil{
-                showError(error!)
-                break
+        }
+        else{
+            for index in 0...1 {
+                let curFile = files[index]
+                var fileContent = ""
+                if curFile is HeaderFileRepresenter{
+                    for file in files{
+                        if file is HeaderFileRepresenter{
+                            fileContent = file.toStr() + fileContent
+                        }
+                    }
+                }
+                else{
+                    for file in files{
+                        if file is HeaderFileRepresenter{
+                        }
+                        else{
+                            fileContent = file.toStr() + fileContent
+                        }
+                    }
+                }
+                fileContent = curFile.toHeadStr() + fileContent
+                var fileExtension = selectedLang.fileExtension
+                if curFile is HeaderFileRepresenter{
+                    fileExtension = selectedLang.headerFileData.headerFileExtension
+                }
+                let filePath = "\(path)/\(curFile.className).\(fileExtension)"
+                
+                do {
+                    try fileContent.write(toFile: filePath, atomically: false, encoding: String.Encoding.utf8)
+                } catch let error1 as NSError {
+                    error = error1
+                }
+                if error != nil{
+                    showError(error!)
+                    break
+                }
             }
         }
     }
@@ -653,7 +697,12 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     //MARK: - NSTableViewDataSource
     func numberOfRows(in tableView: NSTableView) -> Int
     {
-        return files.count
+        if self.multiFileCheckButton.state==NSOnState {//多个model文件
+            return files.count
+        }
+        else{//一个model文件
+            return files.count>0 ? 2 : 0
+        }
     }
     
     
@@ -661,8 +710,13 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView?
     {
         let cell = tableView.make(withIdentifier: "fileCell", owner: self) as! FilePreviewCell
-        let file = files[row]
-        cell.file = file
+        if self.multiFileCheckButton.state==NSOnState {//多个model文件
+            let file = files[row]
+            cell.file = file
+        }
+        else{//一个model文件
+            cell.setFile(files, index: row)
+        }
         
         return cell
     }

@@ -781,7 +781,7 @@
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="639.20993584722419" minWidth="40" maxWidth="1000" id="VGV-RO-QyP">
+                                                <tableColumn width="639" minWidth="40" maxWidth="1000" id="VGV-RO-QyP">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -812,7 +812,7 @@
                                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                                         <size key="minSize" width="597" height="194"/>
-                                                                                        <size key="maxSize" width="599" height="10000000"/>
+                                                                                        <size key="maxSize" width="958" height="10000000"/>
                                                                                         <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                                     </textView>
                                                                                 </subviews>
@@ -897,7 +897,7 @@
                                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="Fu7-ot-Mhx">
-                                    <rect key="frame" x="1" y="119" width="223" height="15"/>
+                                    <rect key="frame" x="1" y="615" width="639" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="pCN-Pt-eWu">
@@ -975,6 +975,16 @@
                                     <action selector="firstLineChanged:" target="XfG-lQ-9wD" id="i1g-lx-x0b"/>
                                 </connections>
                             </textField>
+                            <button horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="yGY-BE-V9q">
+                                <rect key="frame" x="819" y="8" width="130" height="22"/>
+                                <buttonCell key="cell" type="check" title="Multi File" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Lgh-Tm-B4a">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="toggleMultiFileCheckButton:" target="XfG-lQ-9wD" id="2XW-hJ-1MO"/>
+                                </connections>
+                            </button>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xw8-Mo-9li" userLabel="Classes Prefix">
                                 <rect key="frame" x="539" y="8" width="130" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Classes prefix" drawsBackground="YES" id="RFm-PQ-dDB">
@@ -1048,17 +1058,20 @@
                             <constraint firstAttribute="bottom" secondItem="JzR-I4-tfP" secondAttribute="bottom" constant="8" id="Jib-dd-r1l"/>
                             <constraint firstItem="hOy-eG-5aT" firstAttribute="trailing" secondItem="77U-Y7-rpY" secondAttribute="trailing" id="Nfa-PX-ufc"/>
                             <constraint firstItem="s2t-kJ-BOU" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="8" id="OA5-sd-Snp"/>
+                            <constraint firstItem="yGY-BE-V9q" firstAttribute="height" secondItem="xw8-Mo-9li" secondAttribute="height" constant="-4" id="OX9-Lh-qKT"/>
                             <constraint firstItem="xw8-Mo-9li" firstAttribute="height" secondItem="LyJ-Rf-1eI" secondAttribute="height" id="OXE-IS-Xk7"/>
                             <constraint firstItem="j8d-bQ-SWu" firstAttribute="height" secondItem="JzR-I4-tfP" secondAttribute="height" id="P5U-Ev-t4w"/>
                             <constraint firstItem="s2t-kJ-BOU" firstAttribute="height" secondItem="kMM-hs-pvU" secondAttribute="height" id="PVs-Ix-NN1"/>
                             <constraint firstItem="77U-Y7-rpY" firstAttribute="top" secondItem="s2t-kJ-BOU" secondAttribute="bottom" constant="130" id="QOj-c3-CWn"/>
                             <constraint firstItem="j8d-bQ-SWu" firstAttribute="trailing" secondItem="77U-Y7-rpY" secondAttribute="trailing" constant="154" id="R4s-Cq-1s2"/>
+                            <constraint firstItem="yGY-BE-V9q" firstAttribute="width" secondItem="xw8-Mo-9li" secondAttribute="width" constant="-4" id="UHT-Ak-TaB"/>
                             <constraint firstItem="xw8-Mo-9li" firstAttribute="height" secondItem="4lt-2I-gy6" secondAttribute="height" id="URz-Dy-R49"/>
                             <constraint firstItem="4lt-2I-gy6" firstAttribute="leading" secondItem="xw8-Mo-9li" secondAttribute="trailing" constant="150" id="VIN-Hd-PiM"/>
                             <constraint firstItem="ehr-4Y-V2c" firstAttribute="bottom" secondItem="77U-Y7-rpY" secondAttribute="bottom" id="WIf-8O-duM"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="JzR-I4-tfP" secondAttribute="trailing" constant="8" id="WXS-8r-97N"/>
                             <constraint firstItem="VHA-86-kmz" firstAttribute="top" secondItem="s2t-kJ-BOU" secondAttribute="bottom" constant="28" id="XaT-lz-UQf"/>
                             <constraint firstItem="hOy-eG-5aT" firstAttribute="leading" secondItem="IsB-fv-t1M" secondAttribute="trailing" constant="5" id="YU1-me-qP0"/>
+                            <constraint firstItem="yGY-BE-V9q" firstAttribute="centerY" secondItem="xw8-Mo-9li" secondAttribute="centerY" id="YgU-Xd-jCc"/>
                             <constraint firstItem="Au9-Q1-2Pe" firstAttribute="centerY" secondItem="LyJ-Rf-1eI" secondAttribute="centerY" id="Yqq-qD-N7n"/>
                             <constraint firstItem="Au9-Q1-2Pe" firstAttribute="leading" secondItem="LyJ-Rf-1eI" secondAttribute="trailing" constant="-564" id="aiy-SX-Q6o"/>
                             <constraint firstItem="s2t-kJ-BOU" firstAttribute="top" secondItem="kMM-hs-pvU" secondAttribute="top" id="b0V-F1-rba"/>
@@ -1077,6 +1090,7 @@
                             <constraint firstItem="xw8-Mo-9li" firstAttribute="leading" secondItem="j8d-bQ-SWu" secondAttribute="trailing" constant="10" id="kER-hf-Mky"/>
                             <constraint firstItem="gQY-cg-P65" firstAttribute="bottom" secondItem="8j6-OX-npJ" secondAttribute="bottom" id="lpD-Kn-3k4"/>
                             <constraint firstItem="VHA-86-kmz" firstAttribute="trailing" secondItem="hOy-eG-5aT" secondAttribute="trailing" id="lzG-BY-TUN"/>
+                            <constraint firstItem="yGY-BE-V9q" firstAttribute="trailing" secondItem="LyJ-Rf-1eI" secondAttribute="leading" constant="268" id="nff-FC-lra"/>
                             <constraint firstItem="xw8-Mo-9li" firstAttribute="height" secondItem="j8d-bQ-SWu" secondAttribute="height" id="pbt-7N-amS"/>
                             <constraint firstItem="VHA-86-kmz" firstAttribute="leading" secondItem="ja7-oL-t8I" secondAttribute="leading" id="ppq-vs-59C"/>
                             <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="JzR-I4-tfP" secondAttribute="trailing" constant="8" id="pzs-gp-1Rf"/>
@@ -1101,6 +1115,7 @@
                         <outlet property="httpUrlField" destination="IsB-fv-t1M" id="OME-Ry-aqY"/>
                         <outlet property="jsonInputTopConstraint" destination="QOj-c3-CWn" id="xmY-Sr-WAX"/>
                         <outlet property="languagesPopup" destination="Au9-Q1-2Pe" id="qOg-ki-ZmP"/>
+                        <outlet property="multiFileCheckButton" destination="yGY-BE-V9q" id="ZyU-wa-UCq"/>
                         <outlet property="parentClassName" destination="LyJ-Rf-1eI" id="3sj-Jw-hnf"/>
                         <outlet property="saveButton" destination="JzR-I4-tfP" id="lnZ-uV-vx1"/>
                         <outlet property="scrollView" destination="77U-Y7-rpY" id="wUm-Lz-RUg"/>
