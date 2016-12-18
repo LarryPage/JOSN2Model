@@ -118,7 +118,7 @@
     }
   ],
   "constVarDefinition": "NSString *const <!ConstKeyName!> = @\"<!JsonKeyName!>\";\n",
-  "modelDefinition": "\n@implementation <!ModelName!>\n",
+  "modelDefinition": "\n@JSONImplementation(<!ModelName!>)\n",
   "genericType": "NSObject",
   "headerFileData": {
     "modelDefinitionWithParent": "\n@interface <!ModelName!> : <!ParentClass!>\n",
