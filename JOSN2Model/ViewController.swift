@@ -93,6 +93,11 @@ class ViewController: NSViewController, NSUserNotificationCenterDelegate, NSTabl
         
         setHttpMethodSelection()
         setupNumberedhttpParamScrollView()
+        
+        self.httpParamText.isAutomaticQuoteSubstitutionEnabled=false
+        self.httpParamText.isAutomaticDashSubstitutionEnabled=false
+        self.sourceText.isAutomaticQuoteSubstitutionEnabled=false
+        self.sourceText.isAutomaticDashSubstitutionEnabled=false
     }
     
     /**

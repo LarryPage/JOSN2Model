@@ -97,6 +97,8 @@ class FilePreviewCell: NSTableCellView, NSTextViewDelegate {
         super.awakeFromNib()
         if textView != nil{
             textView.delegate = self
+            textView.isAutomaticQuoteSubstitutionEnabled=false
+            textView.isAutomaticDashSubstitutionEnabled=false
             setupNumberedTextView()
         }
     }
